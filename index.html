@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>論文クリティーク帳</title>
+    
+    <link rel="apple-touch-icon" href="IMG_4405.png">
+    <link rel="icon" type="image/png" href="IMG_4405.png">
+
+    <link rel="stylesheet" href="style.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>LIBER: JOURNAL CRITIQUE</h1>
+        <p>論文の知見を構造化し、学術的な画像カードとしてメモ帳へ上書き保存</p>
+    </header>
+
+    <div class="tab-container">
+        <button class="tab-btn active" id="tab-quick">ざっくりななめ読み</button>
+        <button class="tab-btn" id="tab-detail">しっかりクリティーク</button>
+    </div>
+
+    <div id="form-quick-section" class="form-section active">
+        <div class="form-card">
+            <div class="form-group">
+                <label for="q-title">論文タイトル</label>
+                <input type="text" id="q-title" placeholder="例: 看護師のバーンアウトと組織的サポートの関連性">
+            </div>
+            <div class="form-group">
+                <label for="q-source">URL・出典</label>
+                <input type="text" id="q-source" placeholder="例: Journal of Nursing, 2026, Vol.12">
+            </div>
+            <div class="form-group">
+                <label for="q-summary">概要（Abstract）</label>
+                <textarea id="q-summary" rows="4" placeholder="論文の目的、対象、主要な結論などを簡潔に記載。"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="q-learning">今後に活かせる学び</label>
+                <textarea id="q-learning" rows="3" placeholder="自身の研究や、臨床・実務においてどう応用できるか。"></textarea>
+            </div>
+            <button class="btn" id="save-quick-btn">ななめ読みを記録してメモ帳を開く</button>
+        </div>
+    </div>
+
+    <div id="form-detail-section" class="form-section">
+        <div class="form-card">
+            <div class="form-group">
+                <label for="d-title">論文タイトル</label>
+                <input type="text" id="d-title" placeholder="例: 回復期リハビリ病棟における早期介入の効果：RCT研究">
+            </div>
+            
+            <div class="critique-checklist">
+                <h3>🔍 批判的吟味（汎用チェックリスト）</h3>
+                
+                <div class="check-category">
+                    <h4>■ 序論（Introduction）</h4>
+                    <label><input type="checkbox" id="c-intro-1"> 研究の背景や社会的ニーズが明確に述べられているか</label>
+                    <label><input type="checkbox" id="c-intro-2"> 研究の目的・仮説が具体的に明文化されているか</label>
+                </div>
+
+                <div class="check-category">
+                    <h4>■ 方法（Methods）</h4>
+                    <label><input type="checkbox" id="c-method-1"> 対象者の選定基準（サンプリング）に偏り（バイアス）はないか</label>
+                    <label><input type="checkbox" id="c-method-2"> 調査・実験のデザインや手順が再現可能なレベルで具体的か</label>
+                    <label><input type="checkbox" id="c-method-3"> 倫理的な配慮（同意取得、審査委員会等）が明記されているか</label>
+                </div>
+
+                <div class="check-category">
+                    <h4>■ 結果（Results）</h4>
+                    <label><input type="checkbox" id="c-result-1"> 収集されたデータやアンケートの回収率・有効回答数は適切か</label>
+                    <label><input type="checkbox" id="c-result-2"> 統計学的な分析手法が正しく適用され、有意差が示されているか</label>
+                </div>
+
+                <div class="check-category">
+                    <h4>■ 考察（Discussion）</h4>
+                    <label><input type="checkbox" id="c-disc-1"> 結果から導き出された考察に論理的な飛躍はないか</label>
+                    <label><input type="checkbox" id="c-disc-2"> 本研究の限界（制限事項）や今後の課題が率直に述べられているか</label>
+                </div>
+            </div>
+
+            <button class="btn btn-secondary" id="save-detail-btn">クリティークを記録してメモ帳を開く</button>
+        </div>
+    </div>
+
+    <h2 class="list-section-title">記録されたレジストリ</h2>
+    <div id="journal-list-container" class="journal-list"></div>
+</div>
+
+<div id="capture-stage" class="capture-stage">
+    <div id="card-quick-template" class="journal-capture-card">
+        <div class="j-card-header">📖 JOURNAL BRIEF REPORT</div>
+        <div class="j-card-title" id="cap-q-title"></div>
+        <div class="j-card-meta" id="cap-q-source"></div>
+        <div class="j-card-body">
+            <div class="j-section-label">概要 / Abstract</div>
+            <p id="cap-q-summary" class="j-text"></p>
+            <div class="j-section-label">今後の知見・応用 / Implications</div>
+            <p id="cap-q-learning" class="j-text-accent"></p>
+        </div>
+        <div class="j-card-footer">LIBER DATABASE REGISTRY</div>
+    </div>
+
+    <div id="card-detail-template" class="journal-capture-card critique-style">
+        <div class="j-card-header">🛡️ CRITICAL APPRAISAL REPORT</div>
+        <div class="j-card-title" id="cap-d-title"></div>
+        <div class="j-card-body">
+            <div class="j-section-label">批判的吟味マトリクス</div>
+            <ul class="j-checklist-output" id="cap-d-checklist">
+                </ul>
+        </div>
+        <div class="j-card-footer">CRITIQUE VERIFIED REGISTRY</div>
+    </div>
+</div>
+
+<div id="toast" class="toast">コピーしました！</div>
+
+<script src="script.js"></script>
+</body>
+</html>
