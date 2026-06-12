@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>論文クリティーク帳</title>
+    <title>教えてカメさん:論文クリティーク帳</title>
     
     <link rel="apple-touch-icon" href="IMG_4405.png">
     <link rel="icon" type="image/png" href="IMG_4405.png">
@@ -16,7 +16,7 @@
 
 <div class="container">
     <header>
-        <h1>LIBER: JOURNAL CRITIQUE</h1>
+        <h1>教えてカメさん:論文クリティーク帳</h1>
         <p>論文の知見を構造化し、学術的な画像カードとしてメモ帳へ上書き保存</p>
     </header>
 
@@ -53,6 +53,14 @@
                 <label for="d-title">論文タイトル</label>
                 <input type="text" id="d-title" placeholder="例: 回復期リハビリ病棟における早期介入の効果：RCT研究">
             </div>
+            <div class="form-group">
+                <label for="d-source">URL・出典</label>
+                <input type="text" id="d-source" placeholder="例: Lancet Nursing, 2026, Vol.45">
+            </div>
+            <div class="form-group">
+                <label for="d-summary">概要（Abstract）</label>
+                <textarea id="d-summary" rows="3" placeholder="論文の基本的な要約を記載。"></textarea>
+            </div>
             
             <div class="critique-checklist">
                 <h3>🔍 批判的吟味（汎用チェックリスト）</h3>
@@ -79,8 +87,18 @@
                 <div class="check-category">
                     <h4>■ 考察（Discussion）</h4>
                     <label><input type="checkbox" id="c-disc-1"> 結果から導き出された考察に論理的な飛躍はないか</label>
-                    <label><input type="checkbox" id="c-disc-2"> 本研究の限界（制限事項）や今後の課題が率直に述べられているか</label>
+                    <label><input type="checkbox" id="c-disc-2"> 本研究の限界（制限事項）や今後の課題が率静に述べられているか</label>
                 </div>
+            </div>
+
+            <div class="form-group">
+                <label for="d-comment">意見や感想などのコメント（序論〜考察について）</label>
+                <textarea id="d-comment" rows="4" placeholder="各章のチェック項目を踏まえ、気づいた点や疑問点、自身の見解などを自由に入力してください。"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="d-learning">今後に活かせる学び</label>
+                <textarea id="d-learning" rows="3" placeholder="この詳細なクリティークを通じて得られた知見や、今後の研究・実務への活かし方。"></textarea>
             </div>
 
             <button class="btn btn-secondary" id="save-detail-btn">クリティークを記録してメモ帳を開く</button>
@@ -108,10 +126,20 @@
     <div id="card-detail-template" class="journal-capture-card critique-style">
         <div class="j-card-header">🛡️ CRITICAL APPRAISAL REPORT</div>
         <div class="j-card-title" id="cap-d-title"></div>
+        <div class="j-card-meta" id="cap-d-source"></div>
+        
         <div class="j-card-body">
+            <div class="j-section-label">概要 / Abstract</div>
+            <p id="cap-d-summary-out" class="j-text"></p>
+
             <div class="j-section-label">批判的吟味マトリクス</div>
-            <ul class="j-checklist-output" id="cap-d-checklist">
-                </ul>
+            <ul class="j-checklist-output" id="cap-d-checklist"></ul>
+
+            <div class="j-section-label">評価・考察コメント / Comments</div>
+            <p id="cap-d-comment-out" class="j-text-comment"></p>
+
+            <div class="j-section-label">今後の知見・応用 / Implications</div>
+            <p id="cap-d-learning-out" class="j-text-accent"></p>
         </div>
         <div class="j-card-footer">CRITIQUE VERIFIED REGISTRY</div>
     </div>
