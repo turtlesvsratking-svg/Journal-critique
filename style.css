@@ -1,13 +1,13 @@
 /* --- 学術的（Journal）カラーパレット & 変数定義 --- */
 :root {
-    --journal-navy: #1a2a3a;      /* 厳格なディープネイビー */
-    --journal-gold: #8c764d;      /* 落ち着いたゴールド・セピア */
-    --journal-accent: #6b1d1d;    /* 批判的吟味を象徴するボルドー */
-    --bg-academic: #f4f3ef;       /* 古書・論文用紙のような少しセピアな背景 */
+    --journal-navy: #1a2a3a;
+    --journal-gold: #8c764d;
+    --journal-accent: #6b1d1d;
+    --bg-academic: #f4f3ef;
     --card-bg: #ffffff;
     --text-dark: #222222;
     --text-muted: #666666;
-    --radius: 6px;                /* あえて角丸を浅くし、シャープで厳格な印象に */
+    --radius: 6px;
 }
 
 /* --- 基本スタイル --- */
@@ -22,7 +22,7 @@ body {
     color: var(--text-dark);
     line-height: 1.7;
     padding: 30px 15px;
-    font-family: 'Times New Roman', 'Hiragino Mincho ProN', 'MS Mincho', serif; /* 厳格な明朝体ベース */
+    font-family: 'Times New Roman', 'Hiragino Mincho ProN', 'MS Mincho', serif;
 }
 
 .container {
@@ -39,16 +39,19 @@ header {
 }
 
 header h1 {
-    font-size: 2rem;
+    font-size: 1.8rem;
     color: var(--journal-navy);
-    letter-spacing: 2px;
+    letter-spacing: 1px;
     font-weight: 700;
+    line-height: 1.4;
+    word-break: break-all; /* 不自然な改行を防ぐ */
 }
 
 header p {
     font-size: 0.9rem;
     color: var(--text-muted);
     font-style: italic;
+    margin-top: 5px;
 }
 
 /* --- タブコントロール --- */
@@ -77,7 +80,7 @@ header p {
     border-color: var(--journal-navy);
 }
 
-/* --- フォームセクションの表示制御 --- */
+/* --- 表示制御 --- */
 .form-section {
     display: none;
 }
@@ -115,12 +118,7 @@ header p {
     font-size: 1rem;
     color: var(--text-dark);
     font-family: sans-serif;
-}
-
-.form-group input:focus, .form-group textarea:focus {
-    outline: none;
-    border-color: var(--journal-navy);
-    box-shadow: 0 0 0 2px rgba(26, 42, 58, 0.1);
+    line-height: 1.5;
 }
 
 /* --- クリティークチェックリスト --- */
@@ -157,15 +155,14 @@ header p {
     gap: 8px;
     font-size: 0.88rem;
     color: #444;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
     cursor: pointer;
     font-family: sans-serif;
-    line-height: 1.4;
+    line-height: 1.5;
 }
 
 .check-category input[type="checkbox"] {
-    width: auto;
-    margin-top: 3px;
+    margin-top: 4px;
 }
 
 /* --- ボタン --- */
@@ -195,7 +192,7 @@ header p {
     background-color: #4f1212;
 }
 
-/* --- アプリ画面上のレジストリ一覧 --- */
+/* --- 履歴一覧エリア --- */
 .list-section-title {
     font-size: 1.2rem;
     color: var(--journal-navy);
@@ -215,6 +212,7 @@ header p {
     background: var(--card-bg);
     padding: 20px;
     border: 1px solid #dcdad4;
+    word-break: break-all;
 }
 
 .j-rec-type {
@@ -234,10 +232,11 @@ header p {
 }
 
 .j-rec-title {
-    font-size: 1.2rem;
+    font-size: 1.15rem;
     font-weight: bold;
     color: var(--journal-navy);
     margin-bottom: 5px;
+    line-height: 1.5;
 }
 
 .j-rec-meta {
@@ -304,6 +303,7 @@ header p {
 
 /* ==================================================
    🎨 メモ帳に本物の画像として貼られる「学術論文カード」専用デザイン
+   (★文字溢れ・不自然改行の完全防御コーディング)
 ===================================================== */
 .capture-stage {
     position: absolute;
@@ -312,12 +312,14 @@ header p {
 }
 
 .journal-capture-card {
-    width: 520px;
-    background-color: #faf9f5; /* 高級論文紙の質感 */
+    width: 540px; /* 改行バランスを最適化 */
+    background-color: #faf9f5;
     border: 2px solid var(--journal-navy);
     padding: 35px;
     position: relative;
     box-shadow: 5px 5px 0px rgba(26, 42, 58, 0.1);
+    word-break: break-all;      /* 日本語・英語の文字単位での改行を強制 */
+    overflow-wrap: anywhere;    /* URLなども枠内で綺麗に折り返す */
 }
 
 .journal-capture-card.critique-style {
@@ -332,15 +334,15 @@ header p {
     color: var(--text-muted);
     border-bottom: 1px solid #ccc;
     padding-bottom: 5px;
-    margin-bottom: 25px;
+    margin-bottom: 20px;
 }
 
 .j-card-title {
-    font-size: 1.4rem;
+    font-size: 1.35rem;
     font-weight: bold;
     color: var(--journal-navy);
-    line-height: 1.4;
-    margin-bottom: 8px;
+    line-height: 1.5;
+    margin-bottom: 10px;
 }
 
 .critique-style .j-card-title {
@@ -351,19 +353,27 @@ header p {
     font-size: 0.85rem;
     font-style: italic;
     color: var(--journal-gold);
-    margin-bottom: 25px;
+    margin-bottom: 20px;
+    line-height: 1.4;
+}
+
+.j-card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 }
 
 .j-section-label {
     font-family: sans-serif;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     font-weight: bold;
     text-transform: uppercase;
     color: white;
     background: var(--journal-navy);
     display: inline-block;
+    align-self: flex-start; /* ラベルが必要以上に横に伸びるのを防ぐ */
     padding: 2px 8px;
-    margin-bottom: 8px;
+    margin-top: 5px;
     letter-spacing: 1px;
 }
 
@@ -371,12 +381,20 @@ header p {
     background: var(--journal-accent);
 }
 
-.j-text {
+.j-text, .j-text-comment {
     font-size: 0.95rem;
-    color: #333;
-    margin-bottom: 20px;
-    text-align: justify;
+    color: #222;
+    margin-bottom: 10px;
+    text-align: justify; /* 両端揃えで論文らしい美しさに */
     white-space: pre-wrap;
+    line-height: 1.6;
+}
+
+.j-text-comment {
+    background: #f1efe8;
+    padding: 12px;
+    border-radius: 4px;
+    font-style: normal;
 }
 
 .j-text-accent {
@@ -386,21 +404,23 @@ header p {
     padding: 12px;
     border-left: 3px solid var(--journal-gold);
     white-space: pre-wrap;
+    line-height: 1.6;
 }
 
 .j-checklist-output {
     list-style: none;
     padding-left: 0;
+    margin-bottom: 10px;
 }
 
 .j-checklist-output li {
     font-family: sans-serif;
-    font-size: 0.88rem;
-    margin-bottom: 8px;
-    line-height: 1.4;
-    color: #444;
+    font-size: 0.85rem;
+    margin-bottom: 6px;
+    line-height: 1.5;
+    color: #333;
     display: flex;
-    gap: 8px;
+    gap: 6px;
 }
 
 .j-card-footer {
@@ -409,7 +429,7 @@ header p {
     letter-spacing: 1px;
     color: #aaa;
     text-align: center;
-    margin-top: 30px;
+    margin-top: 25px;
     border-top: 1px solid #eee;
     padding-top: 10px;
 }
