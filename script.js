@@ -14,9 +14,14 @@ const qSummary = document.getElementById('q-summary');
 const qLearning = document.getElementById('q-learning');
 const saveQuickBtn = document.getElementById('save-quick-btn');
 
-// フォーム入力要素（クリティーク）
+// フォーム入力要素（クリティーク）★大幅追加
 const dTitle = document.getElementById('d-title');
+const dSource = document.getElementById('d-source');
+const dSummary = document.getElementById('d-summary');
+const dComment = document.getElementById('d-comment');
+const dLearning = document.getElementById('d-learning');
 const saveDetailBtn = document.getElementById('save-detail-btn');
+
 const checklistIds = [
     'c-intro-1', 'c-intro-2',
     'c-method-1', 'c-method-2', 'c-method-3',
@@ -24,7 +29,6 @@ const checklistIds = [
     'c-disc-1', 'c-disc-2'
 ];
 
-// その他UI要素
 const listContainer = document.getElementById('journal-list-container');
 const toast = document.getElementById('toast');
 const captureStage = document.getElementById('capture-stage');
@@ -39,24 +43,23 @@ function showToast(message) {
    📁 タブ切り替え制御
    ================================================== */
 tabQuick.addEventListener('click', () => {
-    tabQuick.classList.add('active');
-    tabDetail.classList.remove('active');
-    sectionQuick.classList.add('active');
-    sectionDetail.classList.remove('active');
+    tabQuick.add('active'); tabDetail.remove('active');
+    sectionQuick.add('active'); sectionDetail.remove('active');
 });
-
-tabDetail.addEventListener('click', () => {
-    tabDetail.classList.add('active');
-    tabQuick.classList.remove('active');
-    sectionDetail.classList.add('active');
-    sectionQuick.classList.remove('active');
-});
+// 補助クラス制御
+tabQuick.onclick = function() {
+    tabQuick.classList.add('active'); tabDetail.classList.remove('active');
+    sectionQuick.classList.add('active'); sectionDetail.classList.remove('active');
+};
+tabDetail.onclick = function() {
+    tabDetail.classList.add('active'); tabQuick.classList.remove('active');
+    sectionDetail.classList.add('active'); sectionQuick.classList.remove('active');
+};
 
 /* ==================================================
-   📸 画像化＆クリップボード書き込み処理 (強固な非同期バイパス仕様)
+   📸 画像生成パイプライン (セキュリティ回避＆自動改行反映仕様)
    ================================================== */
 function setupCaptureStage(item) {
-    // 既存のテンプレートを一旦リセットして非表示に
     const quickTemplate = document.getElementById('card-quick-template');
     const detailTemplate = document.getElementById('card-detail-template');
     quickTemplate.style.display = 'none';
@@ -66,22 +69,28 @@ function setupCaptureStage(item) {
 
     if (item.type === 'quick') {
         document.getElementById('cap-q-title').textContent = item.title;
-        document.getElementById('cap-q-source').textContent = item.source || '出典未記述';
+        document.getElementById('cap-q-source').textContent = item.source || '出典未記入';
         document.getElementById('cap-q-summary').textContent = item.summary;
         document.getElementById('cap-q-learning').textContent = item.learning;
         quickTemplate.style.display = 'block';
         targetNode = quickTemplate;
     } else {
+        // クリティーク版の流し込み（★全要素対応）
         document.getElementById('cap-d-title').textContent = item.title;
+        document.getElementById('cap-d-source').textContent = item.source || '出典未記入';
+        document.getElementById('cap-d-summary-out').textContent = item.summary || '概要未記入';
+        document.getElementById('cap-d-comment-out').textContent = item.comment || 'コメントなし';
+        document.getElementById('cap-d-learning-out').textContent = item.learning || '学び未記入';
+
         const listOutput = document.getElementById('cap-d-checklist');
         listOutput.innerHTML = '';
-        
         item.checklist.forEach(check => {
             const li = document.createElement('li');
             li.innerHTML = `${check.checked ? '☑' : '☒'} <strong>[${check.cat}]</strong> ${check.text}`;
-            if(!check.checked) li.style.color = '#aa2222'; // 未チェックは警告色
+            if(!check.checked) li.style.color = '#aa2222';
             listOutput.appendChild(li);
         });
+
         detailTemplate.style.display = 'block';
         targetNode = detailTemplate;
     }
@@ -164,21 +173,24 @@ saveQuickBtn.addEventListener('click', () => {
     records.push(item);
     localStorage.setItem(storageKey, JSON.stringify(records));
 
-    // フォームリセット
     qTitle.value = ''; qSource.value = ''; qSummary.value = ''; qLearning.value = '';
     renderRecords();
     executeCapturePipeline(item);
 });
 
-// パターン2: しっかりクリティーク保存
+// パターン2: しっかりクリティーク保存 (★機能拡張)
 saveDetailBtn.addEventListener('click', () => {
     const titleVal = dTitle.value.trim();
+    const sourceVal = dSource.value.trim();
+    const summaryVal = dSummary.value.trim();
+    const commentVal = dComment.value.trim();
+    const learningVal = dLearning.value.trim();
+
     if (!titleVal) {
         showToast('⚠️ 論文タイトルを入力してください');
         return;
     }
 
-    // チェックボックス群のステータスとラベルテキストを構造化
     const checkedMatrix = checklistIds.map(id => {
         const el = document.getElementById(id);
         const parentLabel = el.parentElement.textContent.trim();
@@ -198,15 +210,20 @@ saveDetailBtn.addEventListener('click', () => {
         id: Date.now(),
         type: 'detail',
         title: titleVal,
-        checklist: checkedMatrix
+        source: sourceVal,
+        summary: summaryVal,
+        checklist: checkedMatrix,
+        comment: commentVal,
+        learning: learningVal
     };
 
     records.push(item);
     localStorage.setItem(storageKey, JSON.stringify(records));
 
-    // フォームとチェックボックスを初期化
-    dTitle.value = '';
+    // フォームクリア
+    dTitle.value = ''; dSource.value = ''; dSummary.value = ''; dComment.value = ''; dLearning.value = '';
     checklistIds.forEach(id => document.getElementById(id).checked = false);
+    
     renderRecords();
     executeCapturePipeline(item);
 });
@@ -231,9 +248,7 @@ function renderRecords() {
             '<span class="j-rec-type">ざっくりななめ読み</span>' : 
             '<span class="j-rec-type critique-type">しっかりクリティーク</span>';
         
-        const metaInfo = isQuick ? 
-            `<div class="j-rec-meta">${escapeHtml(item.source)}</div>` : 
-            `<div class="j-rec-meta">批判的吟味完了マトリクス</div>`;
+        const metaInfo = `<div class="j-rec-meta">${escapeHtml(item.source || '出典未記入')}</div>`;
 
         card.innerHTML = `
             ${typeBadge}
@@ -267,5 +282,4 @@ function escapeHtml(str) {
     return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
 }
 
-renderPhrases = renderRecords; // 後方互換エイリアス
 renderRecords();
