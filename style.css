@@ -1,0 +1,415 @@
+/* --- 学術的（Journal）カラーパレット & 変数定義 --- */
+:root {
+    --journal-navy: #1a2a3a;      /* 厳格なディープネイビー */
+    --journal-gold: #8c764d;      /* 落ち着いたゴールド・セピア */
+    --journal-accent: #6b1d1d;    /* 批判的吟味を象徴するボルドー */
+    --bg-academic: #f4f3ef;       /* 古書・論文用紙のような少しセピアな背景 */
+    --card-bg: #ffffff;
+    --text-dark: #222222;
+    --text-muted: #666666;
+    --radius: 6px;                /* あえて角丸を浅くし、シャープで厳格な印象に */
+}
+
+/* --- 基本スタイル --- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-academic);
+    color: var(--text-dark);
+    line-height: 1.7;
+    padding: 30px 15px;
+    font-family: 'Times New Roman', 'Hiragino Mincho ProN', 'MS Mincho', serif; /* 厳格な明朝体ベース */
+}
+
+.container {
+    max-width: 650px;
+    margin: 0 auto;
+}
+
+/* --- ヘッダー --- */
+header {
+    text-align: center;
+    margin-bottom: 30px;
+    border-bottom: 2px double var(--journal-navy);
+    padding-bottom: 15px;
+}
+
+header h1 {
+    font-size: 2rem;
+    color: var(--journal-navy);
+    letter-spacing: 2px;
+    font-weight: 700;
+}
+
+header p {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+/* --- タブコントロール --- */
+.tab-container {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 20px;
+}
+
+.tab-btn {
+    flex: 1;
+    background: #e2e0d8;
+    border: 1px solid #ccc;
+    padding: 12px;
+    font-size: 0.95rem;
+    font-weight: bold;
+    cursor: pointer;
+    font-family: sans-serif;
+    color: var(--text-muted);
+    transition: all 0.2s;
+}
+
+.tab-btn.active {
+    background: var(--journal-navy);
+    color: white;
+    border-color: var(--journal-navy);
+}
+
+/* --- フォームセクションの表示制御 --- */
+.form-section {
+    display: none;
+}
+
+.form-section.active {
+    display: block;
+}
+
+/* --- 入力カード --- */
+.form-card {
+    background: var(--card-bg);
+    padding: 25px;
+    border: 1px solid #dcdad4;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    margin-bottom: 30px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: bold;
+    font-size: 0.95rem;
+    color: var(--journal-navy);
+    margin-bottom: 8px;
+    font-family: sans-serif;
+}
+
+.form-group input, .form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #bbb;
+    font-size: 1rem;
+    color: var(--text-dark);
+    font-family: sans-serif;
+}
+
+.form-group input:focus, .form-group textarea:focus {
+    outline: none;
+    border-color: var(--journal-navy);
+    box-shadow: 0 0 0 2px rgba(26, 42, 58, 0.1);
+}
+
+/* --- クリティークチェックリスト --- */
+.critique-checklist {
+    background: #fdfdfb;
+    border: 1px dashed #ccc;
+    padding: 15px;
+    margin-bottom: 25px;
+}
+
+.critique-checklist h3 {
+    font-size: 1rem;
+    color: var(--journal-accent);
+    margin-bottom: 15px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+    font-family: sans-serif;
+}
+
+.check-category {
+    margin-bottom: 15px;
+}
+
+.check-category h4 {
+    font-size: 0.9rem;
+    color: var(--journal-navy);
+    margin-bottom: 5px;
+    font-family: sans-serif;
+}
+
+.check-category label {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 0.88rem;
+    color: #444;
+    margin-bottom: 6px;
+    cursor: pointer;
+    font-family: sans-serif;
+    line-height: 1.4;
+}
+
+.check-category input[type="checkbox"] {
+    width: auto;
+    margin-top: 3px;
+}
+
+/* --- ボタン --- */
+.btn {
+    display: block;
+    width: 100%;
+    background-color: var(--journal-navy);
+    color: white;
+    border: none;
+    padding: 15px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    letter-spacing: 1px;
+    font-family: sans-serif;
+}
+
+.btn:hover {
+    background-color: #0f1b26;
+}
+
+.btn-secondary {
+    background-color: var(--journal-accent);
+}
+
+.btn-secondary:hover {
+    background-color: #4f1212;
+}
+
+/* --- アプリ画面上のレジストリ一覧 --- */
+.list-section-title {
+    font-size: 1.2rem;
+    color: var(--journal-navy);
+    margin-bottom: 15px;
+    border-left: 4px solid var(--journal-gold);
+    padding-left: 8px;
+    font-family: sans-serif;
+}
+
+.journal-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.journal-record-card {
+    background: var(--card-bg);
+    padding: 20px;
+    border: 1px solid #dcdad4;
+}
+
+.j-rec-type {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: bold;
+    padding: 2px 6px;
+    background: #eae8e1;
+    color: var(--journal-navy);
+    margin-bottom: 8px;
+    font-family: sans-serif;
+}
+
+.j-rec-type.critique-type {
+    background: rgba(107, 29, 29, 0.1);
+    color: var(--journal-accent);
+}
+
+.j-rec-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--journal-navy);
+    margin-bottom: 5px;
+}
+
+.j-rec-meta {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+}
+
+.card-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 15px;
+    padding-top: 10px;
+    border-top: 1px dashed #ddd;
+}
+
+.action-btn {
+    background: none;
+    border: 1px solid #ccc;
+    padding: 6px 12px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    font-family: sans-serif;
+}
+
+.btn-copy {
+    color: var(--journal-navy);
+    border-color: var(--journal-navy);
+}
+
+.btn-delete {
+    color: var(--journal-accent);
+    border-color: rgba(107, 29, 29, 0.3);
+}
+
+.empty-state {
+    text-align: center;
+    padding: 40px;
+    color: var(--text-muted);
+    background: var(--card-bg);
+    border: 1px dashed #ccc;
+}
+
+/* --- トースト --- */
+.toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background-color: var(--journal-navy);
+    color: white;
+    padding: 12px 24px;
+    font-size: 0.9rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 1000;
+    font-family: sans-serif;
+}
+
+.toast.show {
+    transform: translateX(-50%) translateY(0);
+}
+
+/* ==================================================
+   🎨 メモ帳に本物の画像として貼られる「学術論文カード」専用デザイン
+===================================================== */
+.capture-stage {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+}
+
+.journal-capture-card {
+    width: 520px;
+    background-color: #faf9f5; /* 高級論文紙の質感 */
+    border: 2px solid var(--journal-navy);
+    padding: 35px;
+    position: relative;
+    box-shadow: 5px 5px 0px rgba(26, 42, 58, 0.1);
+}
+
+.journal-capture-card.critique-style {
+    border-color: var(--journal-accent);
+}
+
+.j-card-header {
+    font-family: 'Times New Roman', serif;
+    font-size: 0.75rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+    color: var(--text-muted);
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 5px;
+    margin-bottom: 25px;
+}
+
+.j-card-title {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: var(--journal-navy);
+    line-height: 1.4;
+    margin-bottom: 8px;
+}
+
+.critique-style .j-card-title {
+    color: var(--journal-accent);
+}
+
+.j-card-meta {
+    font-size: 0.85rem;
+    font-style: italic;
+    color: var(--journal-gold);
+    margin-bottom: 25px;
+}
+
+.j-section-label {
+    font-family: sans-serif;
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: white;
+    background: var(--journal-navy);
+    display: inline-block;
+    padding: 2px 8px;
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+}
+
+.critique-style .j-section-label {
+    background: var(--journal-accent);
+}
+
+.j-text {
+    font-size: 0.95rem;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: justify;
+    white-space: pre-wrap;
+}
+
+.j-text-accent {
+    font-size: 0.95rem;
+    color: var(--text-dark);
+    background: rgba(140, 118, 77, 0.08);
+    padding: 12px;
+    border-left: 3px solid var(--journal-gold);
+    white-space: pre-wrap;
+}
+
+.j-checklist-output {
+    list-style: none;
+    padding-left: 0;
+}
+
+.j-checklist-output li {
+    font-family: sans-serif;
+    font-size: 0.88rem;
+    margin-bottom: 8px;
+    line-height: 1.4;
+    color: #444;
+    display: flex;
+    gap: 8px;
+}
+
+.j-card-footer {
+    font-family: sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 1px;
+    color: #aaa;
+    text-align: center;
+    margin-top: 30px;
+    border-top: 1px solid #eee;
+    padding-top: 10px;
+}
